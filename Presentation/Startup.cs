@@ -13,6 +13,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DataAccess.Context;
+using Application.Interfaces;
+using Application.Services;
+using Domain.Interfaces;
+using DataAccess.Repositories;
 
 namespace Presentation
 {
@@ -41,6 +45,17 @@ namespace Presentation
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //these lines of code will inform the injector class what implementation to instantiate
+            //for the requested interface
+
+            //AddScoped > 1 instance per request
+             //         > e.g. user opens the Index method and the index method makes two calls for the same repository
+             //                class. result: 1 instance of the repository class is created
+
+            services.AddScoped<IBlogsService, BlogsService>();
+            services.AddScoped<IBlogsRepository, BlogsRepositories>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

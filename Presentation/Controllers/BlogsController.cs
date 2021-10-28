@@ -16,6 +16,7 @@ namespace Presentation.Controllers
         public IActionResult Index()
         {
             var list = blogsService.GetBlogs();
+            
             return View(list);
         }
     }
