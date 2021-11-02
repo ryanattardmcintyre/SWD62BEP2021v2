@@ -56,6 +56,9 @@ namespace Presentation
             services.AddScoped<IBlogsService, BlogsService>();
             services.AddScoped<IBlogsRepository, BlogsRepositories>();
 
+            services.AddScoped<ICategoriesService, CategoriesService>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

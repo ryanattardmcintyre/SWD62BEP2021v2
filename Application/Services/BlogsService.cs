@@ -17,7 +17,16 @@ namespace Application.Services
         }
         public void AddBlog(AddBlogViewModel model)
         {
-            throw new NotImplementedException();
+            blogsRepo.AddBlog(
+                new Domain.Models.Blog()
+                {
+                     CategoryId = model.CategoryId,
+                     Name = model.Name,
+                     LogoImageUrl = model.LogoImageUrl,
+                     DateCreated = DateTime.Now,
+                     DateUpdated = DateTime.Now
+                });
+
         }
 
         public BlogViewModel GetBlog(int id)

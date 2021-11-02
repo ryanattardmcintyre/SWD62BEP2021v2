@@ -15,5 +15,7 @@ namespace Domain.Interfaces
         public void DeleteBlog(Blog b);
 
         public void UpdateBlog(Blog b);
+
+      
     }
 }
