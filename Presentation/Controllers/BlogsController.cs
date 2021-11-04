@@ -31,7 +31,7 @@ namespace Presentation.Controllers
             ViewBag.Categories = categoriesService.GetCategories();
             return View();
         }
-
+           
         [HttpPost]
         public IActionResult Create(AddBlogViewModel model)
         {
