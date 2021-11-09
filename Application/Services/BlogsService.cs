@@ -29,9 +29,29 @@ namespace Application.Services
 
         }
 
+        public void DeleteBlog(int id)
+        {
+            var blog = blogsRepo.GetBlog(id);
+            if (blog == null)
+                throw new Exception("The Blog does not exist");
+            else
+            {
+                blogsRepo.DeleteBlog(blog);
+            }
+        }
+
         public BlogViewModel GetBlog(int id)
         {
-            throw new NotImplementedException();
+            var blog = blogsRepo.GetBlog(id);
+            var result = new BlogViewModel()
+            {
+                Id = blog.Id,
+                Category = blog.Category,
+                DateUpdated = blog.DateUpdated,
+                LogoImageUrl = blog.LogoImageUrl,
+                Name = blog.Name
+            };
+            return result;
         }
 
         public IQueryable<BlogViewModel> GetBlogs()
@@ -48,6 +68,16 @@ namespace Application.Services
                            Name = b.Name
                        };
             return list;
+        }
+
+        public void UpdateBlog(AddBlogViewModel editedDetails, int id)
+        {
+            var originalBlog = blogsRepo.GetBlog(id);
+            originalBlog.CategoryId = editedDetails.CategoryId;
+            originalBlog.LogoImageUrl = editedDetails.LogoImageUrl;
+            originalBlog.Name = editedDetails.Name;
+
+            blogsRepo.UpdateBlog(originalBlog);
         }
     }
 }
