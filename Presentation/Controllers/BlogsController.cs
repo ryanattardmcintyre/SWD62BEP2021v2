@@ -8,6 +8,7 @@ using Application.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
@@ -16,11 +17,13 @@ namespace Presentation.Controllers
         private IBlogsService blogsService;
         private ICategoriesService categoriesService;
         private IWebHostEnvironment hostEnv;
-        public BlogsController(IBlogsService _blogsService, ICategoriesService _categoriesService,
+        private ILogger<BlogsController> _logger;
+        public BlogsController(ILogger<BlogsController> logger, IBlogsService _blogsService, ICategoriesService _categoriesService,
             IWebHostEnvironment _hostEnv)
         { blogsService = _blogsService;
             categoriesService = _categoriesService;
             hostEnv = _hostEnv;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -41,6 +44,8 @@ namespace Presentation.Controllers
         [HttpPost]
         public IActionResult Create(AddBlogViewModel model, IFormFile logoFile)
         {
+            _logger.Log(LogLevel.Information, $"{User.Identity.Name} is uploading a file called {logoFile.FileName}");
+
             try
             {
                 if (ModelState.IsValid)
@@ -50,7 +55,7 @@ namespace Presentation.Controllers
                         //1. to generate a new unique filename
                         //5389205C-813B-4AFA-A453-B912C30BF933.jpg
                         string newFilename = Guid.NewGuid() + Path.GetExtension(logoFile.FileName);
-
+                        _logger.Log(LogLevel.Information, $"New filename {newFilename} was generated for the file being uploaded by user {User.Identity.Name}");
                         //2. find what the absolute path to the folder Files is
                         //C:\Users\attar\Source\Repos\SWD62BEP2021v2\Presentation\Files\5389205C-813B-4AFA-A453-B912C30BF933.jpg
 
@@ -58,6 +63,8 @@ namespace Presentation.Controllers
                         //hostEnv.WebRootPath:  C:\Users\attar\Source\Repos\SWD62BEP2021v2\Presentation\wwwroot
 
                         string absolutePath = hostEnv.WebRootPath + "\\Files";
+                        _logger.Log(LogLevel.Information, $"{User.Identity.Name} is about to start saving file at {absolutePath}");
+
                         string absolutePathWithFilename = absolutePath + "\\" + newFilename;
                         model.LogoImageUrl = "\\Files\\" + newFilename;
                         //3. do the transfer/saving of the actual physical file
@@ -67,9 +74,11 @@ namespace Presentation.Controllers
                             logoFile.CopyTo(fs);
                             fs.Close();
                         }
+                        _logger.Log(LogLevel.Information, $"{newFilename} has been saved successfully at {absolutePath}");
+
                     }
 
-                
+
                     blogsService.AddBlog(model);
                     ViewBag.Message = "Blog added successfully";
                 }
