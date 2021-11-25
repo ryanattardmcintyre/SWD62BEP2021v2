@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace DataAccess.Context
 {
-    public class BloggingContext: DbContext
+    public class BloggingContext: IdentityDbContext
     {
         public BloggingContext(DbContextOptions<BloggingContext> options):
             base(options)
@@ -16,6 +18,11 @@ namespace DataAccess.Context
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
         
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
 
 
     }

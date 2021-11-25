@@ -17,7 +17,7 @@ namespace Domain.Models
 
         [ForeignKey("Blog")]
         public int BlogId { get; set; }
-        public Blog Blog { get; set; }
+        public virtual Blog Blog { get; set; }
 
     }
 }

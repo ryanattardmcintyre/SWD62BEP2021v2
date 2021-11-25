@@ -92,6 +92,24 @@ namespace Presentation.Controllers
             return View();
         }
 
+        /*
+         * Lazy Loading
+         * 
+         * when configured you can access properties situated in other tables through navigational properties (e.g. Category)
+         * without it you cannot access properties in other tables, resulting in a null reference object
+         * 
+         * Adv:
+         * - you dont need to write JOIN statements in LINQ
+         * - convenient to access other properties
+         * 
+         * Disadv:
+         * 
+         * - it will load (unwanted) properties in the other table you are tyring to access
+         * - it will slow down the application when there are too many columns within a table you are trying to access through a navigational property
+         * 
+         *  
+         */
+
 
         public IActionResult Details(int id)
         {

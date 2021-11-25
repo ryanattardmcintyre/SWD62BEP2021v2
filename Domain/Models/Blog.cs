@@ -16,8 +16,8 @@ namespace Domain.Models
         public DateTime DateUpdated { get; set; }
         
         [ForeignKey("Category")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int CategoryId { get; set; } //foreignkey
+        public virtual Category Category { get; set; } //navigational property: facilitates the way you can access data from other tables
         public string LogoImageUrl { get; set; }
 
     }
